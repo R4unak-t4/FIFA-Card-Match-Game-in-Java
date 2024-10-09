@@ -55,6 +55,10 @@ public class App {
          for (int i = 0; i < cardset.size(); i++){
              int j = (int) Math.random() * cardset.size();
 
+             Card temp = cardset.get(i);
+             cardset.set(i, cardset.get(j));
+             cardset.set(j,temp);
          }
+        System.out.println(cardset);
     }
 }
