@@ -27,7 +27,8 @@ public class App {
     int cardWidth = 90;
     int cardHeight = 120;
 
-    Array
+    ArrayList<Card> cardset;
+    ImageIcon cardBack;
 
     public void MatchCard() {
         System.out.println("Card Match");
