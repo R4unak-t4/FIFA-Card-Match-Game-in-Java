@@ -53,7 +53,7 @@ public class App {
     void ShuffelCard(){
         System.out.println(cardset);
          for (int i = 0; i < cardset.size(); i++){
-             int j = (int) Math.random() * cardset.size();
+             int j = (int) (Math.random() * cardset.size());
 
              Card temp = cardset.get(i);
              cardset.set(i, cardset.get(j));
