@@ -32,7 +32,7 @@ public class App {
 
     public void MatchCard() {
         cardSetup();
-        ShuffelCard();
+        ShuffleCard();
     }
 
     void cardSetup(){
@@ -50,15 +50,16 @@ public class App {
         Image cardBackimg = new ImageIcon(getClass().getResource("/back.png")).getImage();
         cardBackimg = new ImageIcon(cardBackimg.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH)).getImage();
     }
-    void ShuffelCard(){
-        System.out.println(cardset);
-         for (int i = 0; i < cardset.size(); i++){
-             int j = (int) (Math.random() * cardset.size());
+    void ShuffleCard() {
+        for (int i = 0; i < cardset.size(); i++) {
+            int j = (int) (Math.random() * cardset.size());
 
-             Card temp = cardset.get(i);
-             cardset.set(i, cardset.get(j));
-             cardset.set(j,temp);
-         }
-        System.out.println(cardset);
+
+            Card temp = cardset.get(i);
+            cardset.set(i, cardset.get(j));
+            cardset.set(j, temp);
+        }
+        System.out.println("After shuffle: " + cardset);
     }
+
 }
