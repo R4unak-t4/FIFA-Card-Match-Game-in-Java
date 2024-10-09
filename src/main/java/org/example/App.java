@@ -31,6 +31,30 @@ public class App {
     ImageIcon cardBack;
 
     public void MatchCard() {
-        System.out.println("Card Match");
+        cardSetup();
+        ShuffelCard();
+    }
+
+    void cardSetup(){
+        cardset = new ArrayList<Card>();
+        for (String cardName : cardList){
+
+            Image cardimg = new ImageIcon(getClass().getResource("/"+cardName+".png")).getImage();
+            ImageIcon cardimgincaon = new ImageIcon(cardimg.getScaledInstance(cardWidth,cardHeight, Image.SCALE_SMOOTH));
+
+            Card card = new Card(cardName, cardimgincaon);
+            cardset.add(card);
+        }
+        cardset.addAll(cardset);
+
+        Image cardBackimg = new ImageIcon(getClass().getResource("/back.png")).getImage();
+        cardBackimg = new ImageIcon(cardBackimg.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH)).getImage();
+    }
+    void ShuffelCard(){
+        System.out.println(cardset);
+         for (int i = 0; i < cardset.size(); i++){
+             int j = (int) Math.random() * cardset.size();
+
+         }
     }
 }
