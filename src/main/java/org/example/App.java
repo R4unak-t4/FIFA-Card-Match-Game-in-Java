@@ -3,6 +3,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 public class App {
     class Card{
         String cardNme;
@@ -23,8 +26,8 @@ public class App {
     };
     int rows = 4;
     int col = 5;
-    int cardWidth = 90;
-    int cardHeight = 120;
+    int cardWidth = 100;
+    int cardHeight = 130;
 
     ArrayList<Card> cardset;
     ImageIcon cardBackimgicon;
@@ -158,21 +161,44 @@ public class App {
 
 
     }
+    public BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
+        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = resizedImage.createGraphics();
 
-    void cardSetup(){
+        // Set rendering hints for better image quality
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2d.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
+        g2d.dispose();
+
+        return resizedImage;
+    }
+
+    void cardSetup() {
         cardset = new ArrayList<Card>();
-        for (String cardName : cardList){
+        try {
+            for (String cardName : cardList) {
+                // Load the original image from resources
+                BufferedImage originalImage = ImageIO.read(getClass().getResource("/" + cardName + ".png"));
 
-            Image cardimg = new ImageIcon(getClass().getResource("/"+cardName+".png")).getImage();
-            ImageIcon cardimgincaon = new ImageIcon(cardimg.getScaledInstance(cardWidth,cardHeight, Image.SCALE_SMOOTH));
+                // Resize using the custom resize method
+                BufferedImage resizedImage = resizeImage(originalImage, cardWidth, cardHeight);
+                ImageIcon cardimgicon = new ImageIcon(resizedImage);
 
-            Card card = new Card(cardName, cardimgincaon);
-            cardset.add(card);
+                Card card = new Card(cardName, cardimgicon);
+                cardset.add(card);
+            }
+            cardset.addAll(cardset);
+
+            // Similarly scale the back image
+            BufferedImage backImage = ImageIO.read(getClass().getResource("/back.png"));
+            BufferedImage resizedBackImage = resizeImage(backImage, cardWidth, cardHeight);
+            cardBackimgicon = new ImageIcon(resizedBackImage);
+        } catch (IOException e) {
+            e.printStackTrace();  // Handle the exception (logging, showing error message, etc.)
         }
-        cardset.addAll(cardset);
-
-        Image cardBackimg = new ImageIcon(getClass().getResource("/back.png")).getImage();
-        cardBackimgicon = new ImageIcon(cardBackimg.getScaledInstance(cardWidth, cardHeight, java.awt.Image.SCALE_SMOOTH));
     }
     void ShuffleCard() {
         for (int i = 0; i < cardset.size(); i++) {
