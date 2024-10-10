@@ -117,6 +117,7 @@ public class App {
         restartButton.setText("Restart");
         restartButton.setPreferredSize(new Dimension(boardWidth,30));
         restartButton.setFocusable(false);
+        restartButton.setEnabled(false);
         restartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -124,6 +125,7 @@ public class App {
                     return;
                 }
                 gameready = false;
+                restartButton.setEnabled(false);
                 card1Selection = null;
                 card2Selection = null;
                 ShuffleCard();
@@ -196,5 +198,6 @@ public class App {
         }
 
         gameready = true;
+        restartButton.setEnabled(true);
     }
 }
