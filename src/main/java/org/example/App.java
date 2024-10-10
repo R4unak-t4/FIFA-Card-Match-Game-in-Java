@@ -26,8 +26,8 @@ public class App {
     };
     int rows = 4;
     int col = 5;
-    int cardWidth = 100;
-    int cardHeight = 130;
+    int cardWidth = 180;
+    int cardHeight = 240;
 
     ArrayList<Card> cardset;
     ImageIcon cardBackimgicon;
