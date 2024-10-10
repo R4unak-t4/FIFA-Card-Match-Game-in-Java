@@ -94,7 +94,15 @@ public class App {
                             int index = board.indexOf(card2Selection);
                             card2Selection.setIcon(cardset.get(index).cardIcon);
 
-
+                            if (card1Selection.getIcon() != card2Selection.getIcon()){
+                                errorcount += 1;
+                                textLable.setText("Errors: "+ Integer.toString(errorcount));
+                                HideCardTimer.start();
+                            }
+                            else {
+                                card1Selection = null;
+                                card2Selection = null;
+                            }
                         }
                     }
                 }
@@ -109,6 +117,26 @@ public class App {
         restartButton.setText("Restart");
         restartButton.setPreferredSize(new Dimension(boardWidth,30));
         restartButton.setFocusable(false);
+        restartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!gameready){
+                    return;
+                }
+                gameready = false;
+                card1Selection = null;
+                card2Selection = null;
+                ShuffleCard();
+
+                for (int i = 0; i <board.size();i++){
+                    board.get(i).setIcon(cardset.get(i).cardIcon);
+                }
+
+                errorcount = 0;
+                textLable.setText("Errors: "+ Integer.toString(errorcount));
+                HideCardTimer.start();
+            }
+        });
         RestartPanel.add(restartButton);
         Frame.add(RestartPanel, BorderLayout.SOUTH);
 
@@ -156,9 +184,17 @@ public class App {
 
     }
     void HideCards(){
-        for (int i = 0; i< board.size();i++){
-            board.get(i).setIcon(cardBackimgicon);
+        if(gameready && card1Selection != null && card2Selection !=null){
+            card1Selection.setIcon(cardBackimgicon);
+            card1Selection = null;
+            card2Selection.setIcon(cardBackimgicon);
+            card2Selection = null;
+        }else {
+            for (int i = 0; i< board.size();i++){
+                board.get(i).setIcon(cardBackimgicon);
+            }
         }
+
         gameready = true;
     }
 }
