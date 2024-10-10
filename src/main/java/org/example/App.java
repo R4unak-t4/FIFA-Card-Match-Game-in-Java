@@ -30,9 +30,69 @@ public class App {
     ArrayList<Card> cardset;
     ImageIcon cardBack;
 
+    int boardWidth = col*cardWidth;
+    int boardHeight = rows*cardHeight;
+
+    JFrame Frame = new JFrame("FIFA CARD MATCH");
+    JLabel textLable = new JLabel();
+    JPanel textPanel = new JPanel();
+    JPanel BoardPanel = new JPanel();
+    JPanel RestartPanel = new JPanel();
+    JButton restartButton = new JButton();
+    int errorcount = 0;
+
+    ArrayList<JButton> board;
+
+
+
+
     public void MatchCard() {
         cardSetup();
         ShuffleCard();
+
+
+
+        Frame.setLayout(new BorderLayout());
+        Frame.setSize(boardWidth,boardHeight);
+        Frame.setLocationRelativeTo(null);
+        Frame.setResizable(false);
+        Frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        textLable.setFont(new Font("Arial",Font.PLAIN, 20));
+        textLable.setHorizontalAlignment(JLabel.CENTER);
+        textLable.setText("Error: "+ Integer.toString(errorcount));
+
+        textPanel.setPreferredSize(new Dimension(boardWidth,30));
+        textPanel.add(textLable);
+        Frame.add(textPanel, BorderLayout.NORTH);
+
+        board = new ArrayList<JButton>();
+        BoardPanel.setLayout(new GridLayout(rows, col));
+        for (int i =0; i <cardset.size();i++){
+            JButton tile = new JButton();
+            tile.setPreferredSize(new Dimension(cardWidth,cardHeight));
+            tile.setOpaque(true);
+            tile.setIcon(cardset.get(i).cardIcon);
+            tile.setFocusable(false);
+            board.add(tile);
+            BoardPanel.add(tile);
+
+        }
+        Frame.add(BoardPanel);
+
+        restartButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        restartButton.setText("Restart");
+        restartButton.setPreferredSize(new Dimension(boardWidth,30));
+        restartButton.setFocusable(false);
+        RestartPanel.add(restartButton);
+        Frame.add(RestartPanel, BorderLayout.SOUTH);
+
+
+    Frame.pack();
+        Frame.setVisible(true);
+
+
+
     }
 
     void cardSetup(){
@@ -59,7 +119,7 @@ public class App {
             cardset.set(i, cardset.get(j));
             cardset.set(j, temp);
         }
-        System.out.println("After shuffle: " + cardset);
+
     }
 
 }
