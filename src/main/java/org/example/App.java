@@ -1,7 +1,6 @@
 package org.example;
 import java.awt.*;
 import java.awt.event.*;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import javax.swing.*;
 public class App {
@@ -28,7 +27,7 @@ public class App {
     int cardHeight = 120;
 
     ArrayList<Card> cardset;
-    ImageIcon cardBack;
+    ImageIcon cardBackimgicon;
 
     int boardWidth = col*cardWidth;
     int boardHeight = rows*cardHeight;
@@ -42,6 +41,10 @@ public class App {
     int errorcount = 0;
 
     ArrayList<JButton> board;
+    Timer HideCardTimer;
+    boolean gameready = false;
+    JButton card1Selection;
+    JButton card2Selection;
 
 
 
@@ -74,6 +77,28 @@ public class App {
             tile.setOpaque(true);
             tile.setIcon(cardset.get(i).cardIcon);
             tile.setFocusable(false);
+            tile.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (!gameready){
+                        return;
+                    }
+                    JButton tile = (JButton) e.getSource();
+                    if (tile.getIcon() == cardBackimgicon){
+                        if(card1Selection == null){
+                            card1Selection = tile;
+                            int index = board.indexOf(card1Selection);
+                            card1Selection.setIcon(cardset.get(index).cardIcon);
+                        } else if (card2Selection == null) {
+                            card2Selection = tile;
+                            int index = board.indexOf(card2Selection);
+                            card2Selection.setIcon(cardset.get(index).cardIcon);
+
+
+                        }
+                    }
+                }
+            });
             board.add(tile);
             BoardPanel.add(tile);
 
@@ -89,7 +114,16 @@ public class App {
 
 
     Frame.pack();
-        Frame.setVisible(true);
+    Frame.setVisible(true);
+
+    HideCardTimer = new Timer(1500, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            HideCards();
+        }
+    });
+    HideCardTimer.setRepeats(false);
+    HideCardTimer.start();
 
 
 
@@ -108,7 +142,7 @@ public class App {
         cardset.addAll(cardset);
 
         Image cardBackimg = new ImageIcon(getClass().getResource("/back.png")).getImage();
-        cardBackimg = new ImageIcon(cardBackimg.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH)).getImage();
+        cardBackimgicon = new ImageIcon(cardBackimg.getScaledInstance(cardWidth, cardHeight, java.awt.Image.SCALE_SMOOTH));
     }
     void ShuffleCard() {
         for (int i = 0; i < cardset.size(); i++) {
@@ -121,5 +155,10 @@ public class App {
         }
 
     }
-
+    void HideCards(){
+        for (int i = 0; i< board.size();i++){
+            board.get(i).setIcon(cardBackimgicon);
+        }
+        gameready = true;
+    }
 }
